@@ -88,10 +88,12 @@ int cmd_mount(int argc, char* argv[]) {
 
   if(escalate()) goto error;
 
-  if(mount(boot_loop, mnt_boot.c_str, "vfat", 0, NULL) != 0) {
-    fprintf(stderr, "Failed to mount loop device (%s) to mount point (%s).\n", boot_loop, mnt_boot.c_str);
-    fprintf(stderr, "Error (%d) %s\n", errno, strerror(errno));
-    goto error;
+  if ( !argv[2] || (argv[2] && ( 0 != strcmp(argv[2], "--noboot" ))) ) {
+	  if(mount(boot_loop, mnt_boot.c_str, "vfat", 0, NULL) != 0) {
+		  fprintf(stderr, "Failed to mount loop device (%s) to mount point (%s).\n", boot_loop, mnt_boot.c_str);
+		  fprintf(stderr, "Error (%d) %s\n", errno, strerror(errno));
+		  goto error;
+	  }
   }
 
   if(mount("/dev", mnt_dev.c_str, NULL, MS_BIND|MS_REC, NULL) != 0) {

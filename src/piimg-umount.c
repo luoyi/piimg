@@ -52,6 +52,7 @@ int cmd_umount(int argc, char* argv[]) {
     goto error;
   }
 
+
   printf("Mount Points\n");
   printf("============\n");
   printf("/    : %s\n", mnt_root.c_str);
@@ -64,10 +65,15 @@ int cmd_umount(int argc, char* argv[]) {
 
   if(ui_umount(mnt_sys.c_str)
     || ui_umount(mnt_proc.c_str)
-    || ui_umount(mnt_boot.c_str)
     || ui_umount(mnt_dev.c_str)
     || ui_umount(mnt_root.c_str)) {
     goto error;
+  }
+
+  if ( !argv[1] || (argv[1] && (0 != strcmp(argv[1], "--noboot"))) ) {
+    if ( ui_umount(mnt_boot.c_str) ) {
+		goto error;
+	}
   }
 
   if(drop()) goto error;

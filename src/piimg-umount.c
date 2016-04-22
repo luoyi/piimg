@@ -65,8 +65,7 @@ int cmd_umount(int argc, char* argv[]) {
 
   if(ui_umount(mnt_sys.c_str)
     || ui_umount(mnt_proc.c_str)
-    || ui_umount(mnt_dev.c_str)
-    || ui_umount(mnt_root.c_str)) {
+    || ui_umount(mnt_dev.c_str)) {
     goto error;
   }
 
@@ -74,6 +73,10 @@ int cmd_umount(int argc, char* argv[]) {
     if ( ui_umount(mnt_boot.c_str) ) {
 		goto error;
 	}
+  }
+
+  if ( ui_umount(mnt_root.c_str) ) {
+		goto error;
   }
 
   if(drop()) goto error;

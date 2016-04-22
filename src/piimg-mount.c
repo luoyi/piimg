@@ -43,6 +43,7 @@ int cmd_mount(int argc, char* argv[]) {
     goto error;
   }
 
+  fprintf(stderr, "boot_offset = %d\n", simg.boot_offset);
   if(loopdev_setup_device(argv[0], simg.boot_offset, boot_loop)) {
     fprintf(stderr, "Failed to associate loop device (%s) to file (%s).\n", boot_loop, argv[0], simg.boot_offset);
     goto error;
@@ -93,7 +94,8 @@ int cmd_mount(int argc, char* argv[]) {
 		  fprintf(stderr, "Failed to mount loop device (%s) to mount point (%s).\n", boot_loop, mnt_boot.c_str);
 		  fprintf(stderr, "Error (%d) %s\n", errno, strerror(errno));
 		  goto error;
-	  }
+	  } 
+	  fprintf(stdout, "Mount boot partition OK\n");
   }
 
   if(mount("/dev", mnt_dev.c_str, NULL, MS_BIND|MS_REC, NULL) != 0) {
